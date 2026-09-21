@@ -1,0 +1,6 @@
+# Source : https://stackoverflow.com/questions/53807874/bash-loop-and-return-10-to-1-and-1-to-10
+fn() {
+    echo $1
+}
+
+for ((chrono=1; chrono <= 1000000; chrono++)); do fn $chrono ; done
