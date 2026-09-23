@@ -1,6 +1,10 @@
 K8S_COMPOSE := docker compose -f Kubernetes/compose.yaml
+DEMO_REPORT ?= demo-report.txt
 
-.PHONY: slurm-up slurm-down slurm-shell slurm-jobs slurm-submit k8s-up k8s-down k8s-submit k8s-jobs k8s-logs
+.PHONY: slurm-build slurm-up slurm-down slurm-shell slurm-jobs slurm-submit k8s-up k8s-down k8s-submit k8s-jobs k8s-logs demo
+
+demo:
+	DEMO_REPORT="$(DEMO_REPORT)" bash scripts/demo.sh
 
 slurm-build:
 	@echo "Building Slurm Docker images..."
@@ -74,3 +78,6 @@ k8s-jobs:
 k8s-logs:
 	@test -n "$(JOB)" || { echo "Usage: make k8s-logs JOB=count-to-1m-xxxxx"; exit 1; }
 	$(K8S_COMPOSE) exec -T k3s kubectl logs job/$(JOB) --tail=10
+
+k8s-shell:
+	$(K8S_COMPOSE) exec k3s sh

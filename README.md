@@ -2,11 +2,17 @@
 
 Run the same `scripts/count_to_1M` batch workload with Slurm and Kubernetes, then compare how each system submits, schedules, and reports a job.
 
+## Demo
+
+Run from the repository root:
+
+```sh
+make demo
+```
+
 ## Slurm
 
-The Slurm demo uses the upstream [slurm-docker-cluster](https://github.com/giovtorres/slurm-docker-cluster) checkout. 
-
-From the root of this repository:
+The Slurm demo uses the upstream [slurm-docker-cluster](https://github.com/giovtorres/slurm-docker-cluster) checkout. `make demo` prepares it automatically. For a manual run from the root of this repository:
 
 ```sh
 git clone --depth=1 https://github.com/giovtorres/slurm-docker-cluster.git Slurm/slurm-docker-cluster

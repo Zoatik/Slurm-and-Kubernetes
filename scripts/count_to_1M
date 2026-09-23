@@ -3,4 +3,4 @@ fn() {
     echo $1
 }
 
-for ((chrono=1; chrono <= 1000000; chrono++)); do fn $chrono ; done
+for ((chrono=1; chrono <= 10000000; chrono++)); do fn $chrono ; done
