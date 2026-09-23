@@ -10,6 +10,8 @@ Run from the repository root:
 make demo
 ```
 
+GitHub Actions runs the same demo on pushes andpull requests. It checks that both jobs complete with the same final number, then uploads `demo-report.txt` as the `demo-report` artifact on the workflow run.
+
 ## Slurm
 
 The Slurm demo uses the upstream [slurm-docker-cluster](https://github.com/giovtorres/slurm-docker-cluster) checkout. `make demo` prepares it automatically. For a manual run from the root of this repository:
@@ -46,4 +48,3 @@ make k8s-down
 ```
 
 Each `make k8s-submit` refreshes the ConfigMap from `scripts/count_to_1M` and creates a new Job. `make k8s-down` removes the local demo cluster and its jobs.
-

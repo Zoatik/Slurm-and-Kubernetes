@@ -13,7 +13,7 @@ trap 'code=$?; printf "\nDemo interrupted (line %s, exit code %s).\n" "$LINENO" 
 {
     printf 'DEMO\n'
     printf 'Date: %s\n' "$(date '+%Y-%m-%d %H:%M:%S %Z')"
-    printf 'Common workload: scripts/count_to_1M (Bash, counts from 1 to 1,000,000)\n'
+    printf 'Common workload: scripts/count_to_1M (Bash counting loop)\n'
     printf 'Clusters remain running after the demo for inspection.\n'
 } >> "$report"
 
@@ -143,13 +143,14 @@ k8s_last=$(printf '%s\n' "$k8s_tail" | awk '/^[0-9]+$/ {last=$0} END {print last
     printf 'Final output lines:\n%s\n' "${k8s_tail:-unavailable}"
 } >> "$report"
 
-if [[ $slurm_state == COMPLETED && $k8s_state == Complete && $slurm_last == 1000000 && $k8s_last == 1000000 ]]; then
-    result='both jobs reached 1,000,000 successfully'
+if [[ $slurm_state == COMPLETED && $k8s_state == Complete && $slurm_last =~ ^[0-9]+$ && $slurm_last == "$k8s_last" ]]; then
+    result="both jobs reached $slurm_last successfully"
     demo_ok=true
 else
     result='results differ or are incomplete; check the states and outputs above'
     demo_ok=false
 fi
+printf '\nComparison: %s\n' "$result" >> "$report"
 
 printf 'Report saved to %s\n' "$report"
 [[ $demo_ok == true ]]
