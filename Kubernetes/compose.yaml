@@ -1,0 +1,20 @@
+name: kubernetes
+
+services:
+  k3s:
+    image: rancher/k3s:v1.36.4-k3s1
+    command: [server, --disable=traefik]
+    privileged: true
+    hostname: k3s-demo
+    tmpfs:
+      - /run
+      - /var/run
+    volumes:
+      - ../scripts:/demo/scripts:ro
+      - .:/demo/Kubernetes:ro
+    healthcheck:
+      test: [CMD, kubectl, wait, --for=condition=Ready, node/k3s-demo, --timeout=5s]
+      interval: 5s
+      timeout: 10s
+      retries: 36
+      start_period: 20s

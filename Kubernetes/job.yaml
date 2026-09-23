@@ -1,0 +1,36 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  generateName: count-to-1m-
+  labels:
+    app: count-to-1m
+spec:
+  completions: 1
+  parallelism: 1
+  backoffLimit: 0
+  activeDeadlineSeconds: 3600
+  template:
+    metadata:
+      labels:
+        app: count-to-1m
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: count
+          image: bash:5.2
+          command: [bash, /scripts/count_to_1M]
+          resources:
+            requests:
+              cpu: "1"
+              memory: 64Mi
+            limits:
+              cpu: "1"
+              memory: 64Mi
+          volumeMounts:
+            - name: script
+              mountPath: /scripts
+              readOnly: true
+      volumes:
+        - name: script
+          configMap:
+            name: count-script
